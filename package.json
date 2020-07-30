@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chrome-aws-lambda": "^3.1.1",
+    "puppeteer": "^5.2.1",
+    "puppeteer-extra": "^3.1.13",
+    "puppeteer-extra-plugin-stealth": "^2.4.14"
+  }
+}
