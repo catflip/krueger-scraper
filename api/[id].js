@@ -15,7 +15,7 @@ const run = (async (id) => {
     const options = {
         args: chrome.args,
         executablePath: await chrome.executablePath,
-        headless:chrome.headless,
+        headless:true,
     };
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
@@ -76,7 +76,7 @@ const run = (async (id) => {
             }
           });
     // await page.goto("https://google.com")
-        await page.goto('https://www.kroger.com/search?query='+id);
+        await page.goto('http://kroger.com/p/default-slug/'+id);
         // await page.waitForSelector("#root > div.Page.PinnedCartLayout.controlled > div.Page-outer-block.stack-base > div:nth-child(3) > div > div > div:nth-child(6) > button.kds-Button.kds-Button--primary.DynamicTooltip--Button--Confirm.float-right",{timeout:3000})
         // await page.click("#root > div.Page.PinnedCartLayout.controlled > div.Page-outer-block.stack-base > div:nth-child(3) > div > div > div:nth-child(6) > button.kds-Button.kds-Button--primary.DynamicTooltip--Button--Confirm.float-right")
         await page.waitForSelector('div.ProductCard',{timeout:5000})
@@ -101,9 +101,10 @@ const run = (async (id) => {
     }
     
 })
-// run(0004126036284)
-module.exports = async (req, res) => {
-    const {id}=req.query
-    const data=await run(id)
-    res.json(data)
-  }
+// 0002840058989
+run(0004126036284)
+// module.exports = async (req, res) => {
+//     const {id}=req.query
+//     const data=await run(id)
+//     res.json(data)
+//   }
