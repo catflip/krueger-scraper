@@ -15,7 +15,7 @@ const run = (async (id) => {
     const options = {
         args: chrome.args,
         executablePath: await chrome.executablePath,
-        headless:true,
+        headless:false,
     };
     const StealthPlugin = require('puppeteer-extra-plugin-stealth')
     puppeteer.use(StealthPlugin())
@@ -24,7 +24,7 @@ const run = (async (id) => {
     try{
         await page.setRequestInterception(true);
         const blockedResourceTypes = [
-            'stylesheet',
+            // 'stylesheet',
             'media',
             'font',
             'texttrack',
@@ -65,7 +65,7 @@ const run = (async (id) => {
           ];
           page.on('request', request => {
             const requestUrl = request._url.split('?')[0].split('#')[0];
-            console.log(requestUrl)
+            // console.log(requestUrl)
             if (
               blockedResourceTypes.indexOf(request.resourceType()) !== -1 ||
               skippedResources.some(resource => requestUrl.indexOf(resource) !== -1)
@@ -76,10 +76,10 @@ const run = (async (id) => {
             }
           });
     // await page.goto("https://google.com")
-        await page.goto('http://kroger.com/p/default-slug/'+id);
+        await page.goto('https://www.kroger.com/search?query='+id);
         // await page.waitForSelector("#root > div.Page.PinnedCartLayout.controlled > div.Page-outer-block.stack-base > div:nth-child(3) > div > div > div:nth-child(6) > button.kds-Button.kds-Button--primary.DynamicTooltip--Button--Confirm.float-right",{timeout:3000})
         // await page.click("#root > div.Page.PinnedCartLayout.controlled > div.Page-outer-block.stack-base > div:nth-child(3) > div > div > div:nth-child(6) > button.kds-Button.kds-Button--primary.DynamicTooltip--Button--Confirm.float-right")
-        await page.waitForSelector('div.ProductCard',{timeout:5000})
+        await page.waitForSelector('div.ProductCard',{timeout:7000})
         const s = await page.evaluate(() => {
             const image=document.querySelector("div.ProductCard > div:nth-of-type(2) > a > div >img").src;
             const priceOriginal=document.querySelector("span.kds-Price-singular")?document.querySelector("span.kds-Price-singular").innerText:document.querySelector("s.kds-Price-original")?document.querySelector("s.kds-Price-original").innerText:null;
@@ -92,17 +92,17 @@ const run = (async (id) => {
           console.log(s)
         // const preloadFile = fs.readFileSync('./preload.js', 'utf8');
         // await page.evaluateOnNewDocument(preloadFile);
-        // await browser.close()
+        await browser.close()
         return {status:true,data:s,message:"success"}
     }catch(e){
-        // await browser.close()
+        await browser.close()
         return {status:false,data:null,message:e.message}
 
     }
     
 })
 // 0002840058989
-run(0004126036284)
+run("0004126036284")
 // module.exports = async (req, res) => {
 //     const {id}=req.query
 //     const data=await run(id)
